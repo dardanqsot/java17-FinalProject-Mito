@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,16 @@ public class StudentController {
     @GetMapping("/find/name/like/{name}")
     public ResponseEntity<List<StudentDTO>> findByNameLike(@PathVariable("name") String name){
         List<StudentDTO> list = service.findByNameLike(name).stream().map(this::convertToDto).toList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/sortedByAgeDesc")
+    public ResponseEntity<List<StudentDTO>>  getStudentsSortedByAgeDesc() throws Exception {
+        List<StudentDTO> list = service.readAll().stream()
+                .sorted(Comparator.comparingInt(Student::getAge).reversed())
+                .collect(Collectors.toList())
+                .stream()
+                .map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

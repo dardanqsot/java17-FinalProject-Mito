@@ -2,15 +2,16 @@ package com.dardan.finalproject.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Enrollment {
 
@@ -20,11 +21,8 @@ public class Enrollment {
 
     private LocalDateTime enrollmentDate;
 
-    @ManyToOne
-    private Student student;
+    private  Integer idStudent;
 
-    @OneToMany
-    private List<EnrollmentDetail> enrollmentDetails;
     private boolean active;
 
 }

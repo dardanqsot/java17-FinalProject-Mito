@@ -12,10 +12,16 @@ import lombok.NoArgsConstructor;
 public class EnrollmentDetail {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idEnrollmentDetail;
+
+    @Column(nullable = false)
     private Integer idEnrollment;
 
-    @ManyToOne
-    private Course course;
+    @Column(nullable = false)
+    private Integer idCourse;
+
+    @Column(length = 50, nullable = false)
     private String classroom;
 
 
