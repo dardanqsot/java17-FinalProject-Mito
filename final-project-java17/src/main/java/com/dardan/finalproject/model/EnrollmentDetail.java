@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 public class EnrollmentDetail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idEnrollment;
 
     @ManyToOne
     private Course course;

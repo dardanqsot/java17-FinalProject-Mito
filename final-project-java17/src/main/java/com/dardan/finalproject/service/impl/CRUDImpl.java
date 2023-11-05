@@ -22,7 +22,7 @@ public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
     public T update(T t, ID id) throws Exception {
         Class<?> clazz = t.getClass();
         String className = t.getClass().getSimpleName();
-        String methodName = "setId" + className;  //genera el setIdPatient, setIdExam, etc
+        String methodName = "setId" + className;
         Method setIdMethod = clazz.getMethod(methodName, id.getClass());
         setIdMethod.invoke(t, id);
 

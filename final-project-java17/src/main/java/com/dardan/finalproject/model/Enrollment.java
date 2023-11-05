@@ -16,7 +16,7 @@ public class Enrollment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idEnrollment;
 
     private LocalDateTime enrollmentDate;
 
