@@ -1,5 +1,4 @@
-# java17-FinalProject-Mito
-# Proyecto Spring Boot Ejemplo
+# Proyecto: Trabajo Final del curso Java 17 Backend
 
 Este proyecto es un entregable de fin curso "JAVA 17 Backend, Mitocode".
 Existen 3 controladores: Student, Course y Enrollment, cada uno con sus Endpoints, siendo dos servicios principales solicitados en el entregable de Trabajo Final.
