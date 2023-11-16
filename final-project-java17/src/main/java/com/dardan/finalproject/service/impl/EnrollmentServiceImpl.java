@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +26,6 @@ public class EnrollmentServiceImpl extends CRUDImpl<Enrollment, Integer> impleme
     private final IEnrollmentRepo repo;
 
     private final IEnrollmentDetailRepo enrollmentDetailRepo;
-
-    private final ICourseService serviceCourse;
-    private final IStudentService serviceStudent;
 
     private final ModelMapper mapper;
     @Override
@@ -40,7 +38,7 @@ public class EnrollmentServiceImpl extends CRUDImpl<Enrollment, Integer> impleme
     public void createEnrollment(EnrollmentRequestDTO enrollmentRequestDTO) {
 
         Enrollment enrollment = Enrollment.builder()
-                .idStudent(enrollmentRequestDTO.getIdStudent())
+                //.idStudent(enrollmentRequestDTO.getIdStudent())
                 .enrollmentDate(LocalDateTime.now())
                 .active(enrollmentRequestDTO.isActive())
                 .build();
@@ -63,28 +61,14 @@ public class EnrollmentServiceImpl extends CRUDImpl<Enrollment, Integer> impleme
         return repo.findAll();
     }
 
-
     @Override
-    public Map<String, List<String>> getCoursesAndStudents() throws Exception {
-        List<Enrollment> enrollments = repo.findAll();
-        Map<String, List<String>> courseStudentMap = new HashMap<>();
-        Student student;
-        String studentName;
-        System.out.println("enrollments: "  + enrollments.size());
-        for (Enrollment enrollment : enrollments)
-        {
-            student = serviceStudent.readById(enrollment.getIdStudent());
-            studentName = student.getFirstName() + " " + student.getLastName();
-            List<EnrollmentDetail> enrollmentsDetail  = enrollmentDetailRepo.findByIdEnrollment(enrollment.getIdEnrollment());
-            System.out.println("enrollmentsDetail: "  + enrollmentsDetail.size());
-
-            Course course;
-            for(EnrollmentDetail enrollmentDetail:  enrollmentsDetail){
-                course = serviceCourse.readById(enrollmentDetail.getIdCourse());
-                courseStudentMap.computeIfAbsent(course.getName(), k -> new ArrayList<>()).add(studentName);
-            }
-        }
-
-        return courseStudentMap;
+    public Map<String, List<String>> getCoursesAndStudents() {
+        Stream<Enrollment> enrollStream=repo.findAll().stream();
+        Stream<List<EnrollmentDetail>> lsEnrollDetailStream = enrollStream.map(Enrollment::getEnrollmentDetails);
+        Stream<EnrollmentDetail> enrollDetailStream =  lsEnrollDetailStream.flatMap(list-> list.stream());
+        Map<String, List<String>> studentsByCourse = enrollDetailStream.collect(Collectors.groupingBy(s->s.getCourse().getName(), Collectors.mapping(t->t.getEnrollment().getStudent().getName()+" "+t.getEnrollment().getStudent().getLastName(), Collectors.toList())));
+        return studentsByCourse;
     }
+
+
 }

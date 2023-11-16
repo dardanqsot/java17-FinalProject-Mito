@@ -15,11 +15,15 @@ public class EnrollmentDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEnrollmentDetail;
 
-    @Column(nullable = false)
-    private Integer idEnrollment;
 
-    @Column(nullable = false)
-    private Integer idCourse;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Enrollment enrollment;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Course course;
+
 
     @Column(length = 50, nullable = false)
     private String classroom;

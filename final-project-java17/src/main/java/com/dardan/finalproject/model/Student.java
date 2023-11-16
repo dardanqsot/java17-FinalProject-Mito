@@ -26,4 +26,8 @@ public class Student {
 
     @Column(nullable = false)
     private int age;
+
+    public String getName(){
+        return firstName.concat(" ").concat(lastName);
+    }
 }

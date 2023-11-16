@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +22,13 @@ public class Enrollment {
 
     private LocalDateTime enrollmentDate;
 
-    private  Integer idStudent;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private  Student student;
 
     private boolean active;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EnrollmentDetail> enrollmentDetails;
 
 }
